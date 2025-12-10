@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ADWIDELY — LED Billboard Truck Ranchi — Slot Booking</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <style>
+    /* --- Reset & base --- */
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;color:#0f172a;background:linear-gradient(180deg,#f8fafc, #eef2ff)}
+    a{color:inherit}
+    .container{max-width:1100px;margin:28px auto;padding:20px}
+
+    /* --- Header --- */
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;gap:14px;align-items:center}
+    .logo{width:68px;height:68px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px;box-shadow:0 6px 18px rgba(79,70,229,.14)}
+    h1{margin:0;font-size:20px}
+    p.lead{color:#334155;margin:0;font-size:13px}
+
+    /* --- Layout --- */
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:18px}
+    .card{background:#fff;border-radius:12px;padding:18px;box-shadow:0 6px 20px rgba(2,6,23,.06)}
+
+    /* --- Booking form --- */
+    .field{margin-bottom:12px}
+    label{display:block;font-size:13px;color:#475569;margin-bottom:6px}
+    input[type=text], input[type=file], select, textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef8;font-size:14px}
+    textarea{min-height:84px}
+    .row{display:flex;gap:10px}
+    .btn{background:#4f46e5;color:#fff;padding:10px 14px;border-radius:10px;border:0;font-weight:600;cursor:pointer}
+    .btn.secondary{background:#e6eef8;color:#374151}
+    .muted{font-size:12px;color:#64748b}
+
+    /* --- slots list --- */
+    .slots{display:flex;gap:10px;flex-wrap:wrap}
+    .slot{flex:1 0 45%;border-radius:10px;padding:12px;border:1px dashed #e6eef8;background:linear-gradient(180deg,#fff,#fbfdff);min-width:160px}
+    .slot.taken{border-style:solid;border-color:#f1f5f9;background:#fff6f6}
+    .slot h3{margin:0;font-size:15px}
+    .slot small{display:block;margin-top:6px;color:#475569}
+
+    /* --- preview --- */
+    .preview{display:flex;flex-direction:column;gap:12px}
+    .video-wrap{background:#0f172a;border-radius:8px;overflow:hidden;min-height:220px;display:flex;align-items:center;justify-content:center}
+    video{max-width:100%;max-height:360px}
+
+    /* --- bookings table --- */
+    table{width:100%;border-collapse:collapse;margin-top:8px}
+    th,td{padding:8px;text-align:left;border-bottom:1px solid #f1f5f9;font-size:13px}
+
+    /* --- helper --- */
+    .notice{background:#fffbeb;border-left:4px solid #f59e0b;padding:10px;border-radius:6px;color:#92400e}
+    .success{background:#ecfdf5;border-left:4px solid #10b981;padding:10px;border-radius:6px;color:#065f46}
+    .danger{background:#fff1f2;border-left:4px solid #ef4444;padding:10px;border-radius:6px;color:#7f1d1d}
+
+    /* responsive */
+    @media(max-width:980px){.grid{grid-template-columns:1fr}.preview{order:-1}}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+<header class="nav-wrap">
+  <div class="container nav">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="DigitalBoard" class="brand-logo" />
+      <span class="brand-text">Adwidely</span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html#home">Home</a>
+      <a href="index.html#how">How it Works</a>
+      <a href="index.html#services">Services</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="index.html#testimonials">Testimonials</a>
+      <a href="index.html#contact">Contact</a>
+      <!-- <a href="book-slot.html" class="btn btn-outline">Book Slot</a> -->
+    </nav>
+
+    <button class="hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <aside class="mobile-menu" id="mobileMenu" aria-hidden="true">
+    <div class="mobile-top">
+      <div class="mobile-brand">
+        <img src="assets/logo.png" alt="DigitalBoard" />
+        <strong>Adwidely</strong>
+      </div>
+      <button class="close-mobile" id="closeMobile" aria-label="Close">&times;</button>
+    </div>
+
+    <nav class="mobile-links">
+      <a href="index.html#home" class="mobile-link">Home</a>
+      <a href="index.html#how" class="mobile-link">How it Works</a>
+      <a href="index.html#services" class="mobile-link">Services</a>
+      <a href="index.html#pricing" class="mobile-link">Pricing</a>
+      <a href="index.html#testimonials" class="mobile-link">Testimonials</a>
+      <a href="index.html#contact" class="mobile-link">Contact</a>
+      <a href="book-slot.html" class="mobile-cta">Book Slot</a>
+    </nav>
+  </aside>
+</header>
+
+  
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">AD</div>
+        <div>
+          <h1>ADWIDELY — LED Billboard Truck (Ranchi)</h1>
+          <p class="lead">Promote locally with 30s video slots. 5 slots per month only. Book your slot & upload your 30s ad.</p>
+        </div>
+      </div>
+      <div class="muted">Current month: <strong id="currentMonthLabel"></strong></div>
+    </header>
+
+    <div class="grid">
+      <!-- left: booking & slots -->
+      <div class="card">
+        <h2 style="margin-top:0">Book a 30s Slot</h2>
+        <div class="muted">Rules: Each slot must be exactly ≤ 30 seconds. There are only 5 slots per month. If current month is full, we'll assign the earliest next month with availability.</div>
+
+        <hr style="margin:14px 0;border:none;border-top:1px solid #eef2ff">
+
+        <div class="field">
+          <label>Business / Advertiser Name</label>
+          <input id="bizName" type="text" placeholder="e.g. Sharma Electronics" />
+        </div>
+
+        <div class="field">
+          <label>Preferred Slot (optional)</label>
+          <select id="preferredSlot">
+            <option value="">-- Let system pick earliest free slot --</option>
+            <option value="1">Slot 1</option>
+            <option value="2">Slot 2</option>
+            <option value="3">Slot 3</option>
+            <option value="4">Slot 4</option>
+            <option value="5">Slot 5</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>Upload 30s Video (MP4, WebM) — Max 30 seconds</label>
+          <input id="videoInput" type="file" accept="video/*" />
+          <div class="muted" style="margin-top:6px">You can also drag & drop your video onto the preview area.</div>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;margin-top:6px">
+          <button id="checkBtn" class="btn">Validate & Preview</button>
+          <button id="bookBtn" class="btn secondary">Confirm Booking</button>
+          <div id="statusMsg" style="flex:1"></div>
+        </div>
+
+        <hr style="margin:14px 0;border:none;border-top:1px solid #eef2ff">
+
+        <h3 style="margin:0 0 8px 0">Slots — <span id="monthForSlots"></span></h3>
+        <div class="slots" id="slotsContainer"></div>
+
+        <div style="margin-top:12px">
+          <div class="muted">Bookings (recent)</div>
+          <table id="bookingsTable">
+            <thead><tr><th>Business</th><th>Month</th><th>Slot</th><th>When</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- right: preview -->
+      <div class="card preview">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 style="margin:0">Video Preview</h3>
+          <div class="muted">Preview & validate before booking</div>
+        </div>
+
+        <div class="video-wrap" id="dropZone">
+          <div style="text-align:center;padding:18px;color:#cbd5e1">
+            <div id="dropHint">Drag & drop video here or click "Validate & Preview"</div>
+          </div>
+          <!-- video element injected here -->
+        </div>
+
+        <div id="previewDetails" style="display:none">
+          <div class="muted">Filename: <span id="fileName"></span></div>
+          <div class="muted">Duration: <span id="durationLabel"></span></div>
+          <div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+            <button id="playPreview" class="btn">Play</button>
+            <button id="downloadBtn" class="btn secondary">Download Video</button>
+            <div id="validateResult"></div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px">
+          <h4 style="margin:0">Queue / Next Months</h4>
+          <div class="muted">If this month is full, bookings are placed in the earliest next month with available slots.</div>
+          <div id="futureList" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Utilities ---
+    const BOOKINGS_KEY = 'adwidely_bookings_v1'; // localStorage key
+    const SLOTS_PER_MONTH = 5;
+
+    function monthKeyFromDate(d){
+      const y = d.getFullYear();
+      const m = d.getMonth()+1; // 1..12
+      return `${y}-${String(m).padStart(2,'0')}`;
+    }
+    function monthLabel(key){
+      const [y,mm] = key.split('-');
+      const date = new Date(Number(y), Number(mm)-1, 1);
+      return date.toLocaleString(undefined, {month:'long', year:'numeric'});
+    }
+
+    function loadBookings(){
+      try{
+        return JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
+      }catch(e){return []}
+    }
+    function saveBookings(arr){ localStorage.setItem(BOOKINGS_KEY, JSON.stringify(arr)); }
+
+    function getCountsForMonth(key){
+      const all = loadBookings();
+      const byMonth = all.filter(b => b.month === key);
+      return byMonth.length;
+    }
+
+    // find earliest month (starting from current) which has free slot
+    function findEarliestWithSpace(startDate){
+      const clone = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
+      for(let i=0;i<36;i++){ // search up to 3 years ahead
+        const k = monthKeyFromDate(clone);
+        if(getCountsForMonth(k) < SLOTS_PER_MONTH) return k;
+        clone.setMonth(clone.getMonth()+1);
+      }
+      return null;
+    }
+
+    // --- UI wiring ---
+    const currentMonthLabel = document.getElementById('currentMonthLabel');
+    const monthForSlots = document.getElementById('monthForSlots');
+    const slotsContainer = document.getElementById('slotsContainer');
+    const bookingsTableBody = document.querySelector('#bookingsTable tbody');
+    const futureList = document.getElementById('futureList');
+
+    const dropZone = document.getElementById('dropZone');
+    const videoInput = document.getElementById('videoInput');
+    const checkBtn = document.getElementById('checkBtn');
+    const bookBtn = document.getElementById('bookBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    const bizName = document.getElementById('bizName');
+    const preferredSlot = document.getElementById('preferredSlot');
+
+    const previewDetails = document.getElementById('previewDetails');
+    const fileNameLabel = document.getElementById('fileName');
+    const durationLabel = document.getElementById('durationLabel');
+    const playPreview = document.getElementById('playPreview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const validateResult = document.getElementById('validateResult');
+    const dropHint = document.getElementById('dropHint');
+
+    let currentFile = null; // File object
+    let currentDataURL = null; // base64
+    let currentDuration = 0;
+    let currentPreviewVideoEl = null;
+
+    function setStatus(html, type){ statusMsg.innerHTML = `<div class="${type||''}" style="padding:8px;border-radius:8px">${html}</div>` }
+
+    function renderSlotsForMonth(key){
+      monthForSlots.textContent = monthLabel(key);
+      slotsContainer.innerHTML = '';
+      const all = loadBookings();
+      const byMonth = all.filter(b => b.month === key).sort((a,b)=>a.slot-b.slot);
+      // map taken slots
+      const taken = {};
+      byMonth.forEach(b=> taken[b.slot] = b);
+      for(let i=1;i<=SLOTS_PER_MONTH;i++){
+        const s = document.createElement('div'); s.className='slot';
+        const h = document.createElement('h3'); h.textContent = `Slot ${i} — 30s`;
+        s.appendChild(h);
+        if(taken[i]){
+          s.classList.add('taken');
+          const small = document.createElement('small'); small.innerHTML = `Taken by <strong>${escapeHtml(taken[i].business)}</strong><br><span class="muted">Booked ${new Date(taken[i].when).toLocaleString()}</span>`;
+          s.appendChild(small);
+        } else {
+          const small = document.createElement('small'); small.innerHTML = `Available`;
+          s.appendChild(small);
+        }
+        slotsContainer.appendChild(s);
+      }
+    }
+
+    function renderRecentBookings(){
+      const all = loadBookings().slice(-30).reverse();
+      bookingsTableBody.innerHTML='';
+      all.forEach(b=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${escapeHtml(b.business)}</td><td>${monthLabel(b.month)}</td><td>${b.slot}</td><td>${new Date(b.when).toLocaleString()}</td>`;
+        bookingsTableBody.appendChild(tr);
+      });
+    }
+
+    function renderFutureMonths(){
+      const start = new Date();
+      const items = [];
+      const clone = new Date(start.getFullYear(), start.getMonth(), 1);
+      for(let i=0;i<6;i++){
+        const k = monthKeyFromDate(clone);
+        const filled = getCountsForMonth(k);
+        items.push({key:k,filled});
+        clone.setMonth(clone.getMonth()+1);
+      }
+      futureList.innerHTML='';
+      items.forEach(it=>{
+        const el = document.createElement('div');
+        el.className = it.filled >= SLOTS_PER_MONTH ? 'notice' : 'success';
+        el.style.marginBottom='8px';
+        el.innerHTML = `<strong>${monthLabel(it.key)}</strong> — ${it.filled}/${SLOTS_PER_MONTH} slots booked`;
+        futureList.appendChild(el);
+      });
+    }
+
+    function escapeHtml(s){ return String(s).replace(/[&<>"]/g, c=>({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c])) }
+
+    // --- file handling ---
+    async function handleFile(file){
+      if(!file) return;
+      currentFile = file;
+      fileNameLabel.textContent = file.name;
+
+      // create object URL to measure duration
+      const url = URL.createObjectURL(file);
+      const v = document.createElement('video');
+      v.preload='metadata';
+      v.src = url;
+      v.muted = true;
+      await new Promise((res, rej)=>{
+        v.onloadedmetadata = ()=>res();
+        v.onerror = ()=>rej(new Error('Invalid video file'));
+      });
+      const duration = v.duration || 0;
+      currentDuration = duration;
+      durationLabel.textContent = duration.toFixed(2) + 's';
+
+      // validation: max 30s
+      if(duration>30){
+        validateResult.innerHTML = `<div class="danger">Video is ${duration.toFixed(2)}s — must be 30s or less.</div>`;
+      } else if(duration<0.5){
+        validateResult.innerHTML = `<div class="danger">Video appears too short.</div>`;
+      } else {
+        validateResult.innerHTML = `<div class="success">Duration OK — ${duration.toFixed(2)}s</div>`;
+      }
+
+      // convert to data URL (base64) for storage & preview
+      const dataURL = await fileToDataURL(file);
+      currentDataURL = dataURL;
+
+      // show preview video element
+      if(currentPreviewVideoEl){ currentPreviewVideoEl.remove(); currentPreviewVideoEl=null }
+      const vid = document.createElement('video');
+      vid.controls = true; vid.src = dataURL; vid.style.maxWidth='100%'; vid.style.display='block';
+      dropZone.innerHTML = ''; dropZone.appendChild(vid);
+      currentPreviewVideoEl = vid;
+      previewDetails.style.display='block';
+      setStatus('File loaded. Validate duration and then confirm booking.', '');
+
+      // release object url
+      URL.revokeObjectURL(url);
+    }
+
+    function fileToDataURL(file){
+      return new Promise((res,rej)=>{
+        const r = new FileReader();
+        r.onload = ()=>res(r.result);
+        r.onerror = ()=>rej(r.error);
+        r.readAsDataURL(file);
+      });
+    }
+
+    // drag & drop
+    dropZone.addEventListener('dragover', e=>{ e.preventDefault(); dropZone.style.outline='3px dashed rgba(79,70,229,.12)'; dropHint.textContent='Drop video to upload'; });
+    dropZone.addEventListener('dragleave', e=>{ dropZone.style.outline='none'; dropHint.textContent='Drag & drop video here or click "Validate & Preview"'; });
+    dropZone.addEventListener('drop', e=>{ e.preventDefault(); dropZone.style.outline='none'; const f = e.dataTransfer.files[0]; if(f) { videoInput.files = e.dataTransfer.files; handleFile(f); } });
+
+    videoInput.addEventListener('change', e=>{ const f = e.target.files && e.target.files[0]; if(f) handleFile(f); });
+
+    checkBtn.addEventListener('click', async ()=>{
+      if(!videoInput.files[0]){ setStatus('Please choose a video file first.','danger'); return; }
+      await handleFile(videoInput.files[0]);
+    });
+
+    playPreview.addEventListener('click', ()=>{ if(currentPreviewVideoEl) currentPreviewVideoEl.play(); });
+    downloadBtn.addEventListener('click', ()=>{
+      if(!currentDataURL) return;
+      const a = document.createElement('a'); a.href = currentDataURL; a.download = (currentFile && currentFile.name) || 'ad-video'; document.body.appendChild(a); a.click(); a.remove();
+    });
+
+    // booking process
+    bookBtn.addEventListener('click', ()=>{
+      const name = bizName.value.trim();
+      if(!name){ setStatus('Please enter business/advertiser name','danger'); return; }
+      if(!currentFile || !currentDataURL){ setStatus('Please upload & validate a video first','danger'); return; }
+      if(currentDuration>30){ setStatus('Video exceeds 30s — shorten it to 30s or less','danger'); return; }
+
+      // pick month
+      const startDate = new Date();
+      const desiredMonth = monthKeyFromDate(startDate);
+      let chosenMonth = desiredMonth;
+
+      // if preferred slot chosen, attempt to reserve that slot in earliest month with space
+      const pref = preferredSlot.value ? Number(preferredSlot.value) : null;
+
+      if(getCountsForMonth(chosenMonth) < SLOTS_PER_MONTH){
+        // some slots available this month
+      } else {
+        // find earliest next month with space
+        const found = findEarliestWithSpace(startDate);
+        if(!found){ setStatus('No available slots in next 3 years — contact admin','danger'); return; }
+        chosenMonth = found;
+      }
+
+      // now assign slot number: preferred if available, else first free
+      const all = loadBookings();
+      const monthBookings = all.filter(b=>b.month===chosenMonth);
+      const takenSlots = new Set(monthBookings.map(b=>b.slot));
+      let assignSlot = 1;
+      if(pref && !takenSlots.has(pref) && pref>=1 && pref<=SLOTS_PER_MONTH && chosenMonth===monthKeyFromDate(new Date())){
+        // if user specifically asked for a slot in current month, allow only if still free in that month
+        assignSlot = pref;
+      } else {
+        for(let i=1;i<=SLOTS_PER_MONTH;i++){ if(!takenSlots.has(i)){ assignSlot = i; break; }}
+      }
+
+      // create booking
+      const booking = {
+        id: 'b_'+Date.now(),
+        business: name,
+        month: chosenMonth,
+        slot: assignSlot,
+        when: new Date().toISOString(),
+        videoDataURL: currentDataURL // WARNING: demo-only; large storage
+      };
+      all.push(booking);
+      saveBookings(all);
+      setStatus(`Booked: ${name} — ${monthLabel(chosenMonth)} slot ${assignSlot}.`, 'success');
+
+      // reset form lightly (but keep preview)
+      bizName.value=''; preferredSlot.value='';
+      refreshAll();
+    });
+
+    // render everything
+    function refreshAll(){
+      const now = new Date();
+      const thisMonthKey = monthKeyFromDate(now);
+      currentMonthLabel.textContent = monthLabel(thisMonthKey);
+
+      renderSlotsForMonth(thisMonthKey);
+      renderRecentBookings();
+      renderFutureMonths();
+    }
+
+    // on load
+    refreshAll();
+
+    // expose a small admin helper in console (for testing)
+    console.info('ADWIDELY demo page loaded. Use localStorage key "'+BOOKINGS_KEY+'" to inspect bookings.');
+
+    // helper: preload some demo sample if no bookings exist (comment out in production)
+    (function seedDemo(){
+      const all = loadBookings();
+      if(all.length===0){
+        // keep empty by default. Add demo entries if desired.
+        // Example:
+        // const k = monthKeyFromDate(new Date());
+        // all.push({id:'b_demo',business:'Demo Shop',month:k,slot:1,when:new Date().toISOString(),videoDataURL:''});
+        // saveBookings(all); refreshAll();
+      }
+    })();
+
+  </script>
+
+  <!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer-grid">
+    <div>
+      <img src="assets/logo.png" alt="DigitalBoard" class="footer-logo" />
+      <p class="small muted">© <span id="year"></span> Adwidely. All rights reserved.</p>
+    </div>
+
+    <div class="contact-info">
+      <p class="small">📞 +91 7549431105</p>
+      <p class="small">✉ info@adwidely.com</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
